@@ -1,14 +1,14 @@
 module.exports = {
   siteMetadata: {
-    title: `Gatsby Starter Blog`,
+    title: `悪魔のオコトバ`,
     author: {
-      name: `Kyle Mathews`,
-      summary: `who lives and works in San Francisco building useful things.`
+      name: `アクマちゃん`,
+      summary: `2013年くらいからたぶんサーバーサイドプログラマーです。好きなものは謎解き・ボードゲーム・音楽・プログラミング。住んでいるところが海に近いのでいつかサーフィンをやってみたい。`
     },
-    description: `A starter blog demonstrating what Gatsby can do.`,
-    siteUrl: `https://gatsby-starter-blog-demo.netlify.app/`,
+    description: `勉強したことや調べたことを忘れないように書き記します。`,
+    siteUrl: `https://akumachan.github.io`,
     social: {
-      twitter: `kylemathews`
+      twitter: `akumachanit`
     }
   },
   plugins: [
