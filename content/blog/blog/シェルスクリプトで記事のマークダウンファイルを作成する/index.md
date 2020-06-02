@@ -37,7 +37,7 @@ gatsby-starter-blogの中のマークダウンファイルの階層は以下の�
 #Parameter1: Category name
 #Parameter2: Entry title
 
-dir="./$1/$2/"
+dir="./${1}/${2}/"
 file="${dir}index.md"
 
 cd ./content/blog/
@@ -46,8 +46,8 @@ cd ./content/blog/
 mkdir -p $dir
 #ファイル作成・Front Matter書き込み
 echo "---" > ${file}
-echo "title: ${2}" >> ${file}
-echo "date: \"`date "+%Y-%m-%d-%H:%M:%S"`\"" >> ${file}
+echo "title: ${2//_/ }" >> ${file}
+echo "date: \"`date "+%Y-%m-%d %H:%M:%S"`\"" >> ${file}
 echo "description: \"\"" >> ${file}
 echo "category: \"${1}\"" >> ${file}
 echo "tags: []" >> ${file}
@@ -60,6 +60,7 @@ code ${file}
 ```
 
 自動でFront MatterのTitle, Date, Categoryを設定できるようにしました。
+タイトルにスペースを入れたい場合はスペースを`_`と置き、Front Matter内でスペースに置き換えます。
 
 ## 実行ファイルにする
 
