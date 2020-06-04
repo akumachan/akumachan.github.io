@@ -9,7 +9,7 @@ file="${dir}index.md"
 cd ./content/blog/
 mkdir -p $dir
 echo "---" > ${file}
-echo "title: ${2//_/ }" >> ${file}
+echo "title: \"${2//_/ }\"" >> ${file}
 echo "date: \"`date "+%Y-%m-%d %H:%M:%S"`\"" >> ${file}
 echo "description: \"\"" >> ${file}
 echo "category: \"${1}\"" >> ${file}

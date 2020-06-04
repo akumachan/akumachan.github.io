@@ -2,7 +2,7 @@
 title: シェルスクリプトでの記事のマークダウンファイルを作成する
 date: "2020-06-01 19:54:54"
 description: "GatsbyJSのgatsby-starter-blogでブログ記事を作成するときに記事と同じ名前のディレクトリを作成してその中にindex.mdを作成しなければならないのが面倒だったのでシェルスクリプトを作成した。"
-category: "Blog"
+category: "ブログ"
 tags: ["ShellScript", "GatsbyJS"]
 ---
 
@@ -46,7 +46,7 @@ cd ./content/blog/
 mkdir -p $dir
 #ファイル作成・Front Matter書き込み
 echo "---" > ${file}
-echo "title: ${2//_/ }" >> ${file}
+echo "title: \"${2//_/ }\"" >> ${file}
 echo "date: \"`date "+%Y-%m-%d %H:%M:%S"`\"" >> ${file}
 echo "description: \"\"" >> ${file}
 echo "category: \"${1}\"" >> ${file}
@@ -78,7 +78,7 @@ chmod +x ./mken.sh
 
 ```Text
 ---
-title: シェルスクリプトでの記事のマークダウンファイルを作成する
+title: "シェルスクリプトでの記事のマークダウンファイルを作成する"
 date: "2020-06-01 19:54:54"
 description: ""
 category: "Blog"

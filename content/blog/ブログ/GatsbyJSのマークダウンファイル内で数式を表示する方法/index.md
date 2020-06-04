@@ -2,7 +2,7 @@
 title: GatsbyJSのマークダウンファイル内で数式を表示する方法
 date: "2020-06-02 08:27:49"
 description: "最近高校数学を1から勉強していて、ブログに勉強したことを書き残したいが数式をいちいち画像で挿入するのは大変なのでgatsby-remark-katexというライブラリを試してみた。"
-category: "Blog"
+category: "ブログ"
 tags: ["数学", "Markdown", "GatsbyJS"]
 ---
 

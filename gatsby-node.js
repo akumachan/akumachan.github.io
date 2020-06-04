@@ -19,6 +19,7 @@ exports.createPages = async ({ graphql, actions }) => {
               }
               frontmatter {
                 title
+                category
               }
             }
           }
@@ -35,8 +36,15 @@ exports.createPages = async ({ graphql, actions }) => {
   const posts = result.data.allMarkdownRemark.edges
 
   posts.forEach((post, index) => {
-    const previous = index === posts.length - 1 ? null : posts[index + 1].node
-    const next = index === 0 ? null : posts[index - 1].node
+    // const previous = index === posts.length - 1 ? null : posts[index + 1].node
+    // const next = index === 0 ? null : posts[index - 1].node
+
+    const categPrevPost = posts.slice(index + 1, posts.length).find(v =>
+      v.node.frontmatter.category === post.node.frontmatter.category)
+    const categNextPost = posts.slice(0, index).reverse().find(v =>
+      v.node.frontmatter.category === post.node.frontmatter.category)
+    const previous = !categPrevPost ? null : categPrevPost.node
+    const next = !categNextPost ? null : categNextPost.node
 
     createPage({
       path: post.node.fields.slug,

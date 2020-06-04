@@ -2,7 +2,7 @@
 title: GatsbyJSのコンテンツディレクトリをリネームしたらNot Foundになった
 date: "2020-06-02 22:10:32"
 description: "GatsbyJSのコンテンツディレクトリをリネームしたら該当の記事がNot Foundになったので一応備忘録。"
-category: "Blog"
+category: "ブログ"
 tags: ["GatsbyJS","gatsby-starter-blog","GitHub Pages"]
 ---
 
@@ -16,3 +16,6 @@ tags: ["GatsbyJS","gatsby-starter-blog","GitHub Pages"]
 
 ## 解決
 一度`Blog2`という名前にリネームしてデプロイし、`Blog`に戻したら直りました。
+
+## と思ったら
+挙動が怪しかったので、思い切って`ブログ`に変えました。

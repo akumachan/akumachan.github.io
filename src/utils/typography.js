@@ -3,11 +3,16 @@ import Wordpress2016 from "typography-theme-wordpress-2016"
 
 Wordpress2016.headerFontFamily = ['M PLUS 1p', 'Roboto', 'serif']
 Wordpress2016.bodyFontFamily = ['M PLUS 1p', 'Roboto', 'serif']
+delete Wordpress2016.googleFonts
 Wordpress2016.googleFonts = [
   {
-    name: 'M+PLUS+1p',
+    name: 'M PLUS 1p',
     styles: ['400'],
-  }
+  },
+  {
+    name: 'Kosugi Maru',
+    styles: []
+  },
 ]
 
 Wordpress2016.overrideThemeStyles = () => {
@@ -15,10 +20,11 @@ Wordpress2016.overrideThemeStyles = () => {
     "a.gatsby-resp-image-link": {
       boxShadow: `none`,
     },
+    h1: {
+      fontFamily: ["Kosugi Maru", "Roboto", "serif"].join(","),
+    },
   }
 }
-
-// delete Wordpress2016.googleFonts
 
 const typography = new Typography(Wordpress2016)
 
