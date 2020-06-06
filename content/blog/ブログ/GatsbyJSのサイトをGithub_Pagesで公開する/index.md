@@ -62,4 +62,4 @@ yarn deploy
 
 ## 関連項目
 
-[GatsbyJSのソースをpushしたら自動でビルドしてGithub Pagesにデプロイする]()
+[GatsbyJSのソースをpushしたら自動でビルドしてGithub Pagesにデプロイする](../GatsbyJSのソースをpushしたら自動でビルドしてGithub Pagesにデプロイする/)
