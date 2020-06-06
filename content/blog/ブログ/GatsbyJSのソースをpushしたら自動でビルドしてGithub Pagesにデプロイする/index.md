@@ -42,7 +42,7 @@ Github右上ののユーザーアイコンから`Settings > Developer settings >
 Github ActionsのWorkflowはソースのブランチの`.github/workflows`に設定を記したymlファイルを置いておくだけで機能するようです。  
 今回は以下の内容でymlファイルを作成しました。  
 
-*github/workflows/atsby-publish.yml*
+*github/workflows/Gatsby-publish.yml*
 ```yml
 name: Gatsby Publish
 
