@@ -4,6 +4,7 @@ date: "2020-06-05 17:38:47"
 description: "GatsbyJSのソースをgitにPushしたときに自動でビルドしてGithub PagesにデプロイしてくれるようにGithub ActionsのWorkflowを設定した。"
 category: "ブログ"
 tags: ["GatsbyJS", "Github Pages", "Github Actions"]
+published: true
 ---
 
 GatsbyJSでブログ記事を書いてgh-pages（参考:[GatsbyJSのサイトをGithub Pagesで公開する](../GatsbyJSのサイトをGithub_Pagesで公開する/)）でGithub Pagesにデプロイしていましたが、ソースファイルのPushとデプロイを別でやらなきゃいけないのは大変だったので、Pushしたら自動でデプロイできるように設定しました。  

@@ -4,6 +4,7 @@ date: "2020-05-31 17:11:23"
 description: "VisualStudioCodeで普段は行末尾のスペースを保存時に自動で削除するように設定しているが、マークダウンでは行末尾のスペースで改行するため、マークダウンエディターでは自動削除をオフに設定する。"
 category: "VisualStudioCode"
 tags: ["VisualStudioCode", "Markdown"]
+published: true
 ---
 
 VisualStudioCodeで[末尾のスペースを自動で削除する]()ように設定していると、マークダウン文書を編集しているときに改行のための末尾のスペースが全て削除されてしまうため、  

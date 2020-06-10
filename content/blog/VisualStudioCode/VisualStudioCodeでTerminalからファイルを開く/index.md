@@ -4,6 +4,7 @@ date: "2020-05-31 18:10:59"
 description: "VisualStudioCodeで、Terminalでファイルを作成してからExplorerでファイルを開くのが手間なときにコマンドで開く方法。"
 category: "VisualStudioCode"
 tags: ["VisualStudioCode"]
+published: true
 ---
 
 Explorerからいちいちクリックして開くのが面倒なのでTerminalから開けるようにしましょう。

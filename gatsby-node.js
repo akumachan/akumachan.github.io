@@ -9,6 +9,7 @@ exports.createPages = async ({ graphql, actions }) => {
     `
       {
         allMarkdownRemark(
+          filter: { frontmatter:  { published: { eq: true }}}
           sort: { fields: [frontmatter___date], order: DESC }
           limit: 1000
         ) {
@@ -32,12 +33,11 @@ exports.createPages = async ({ graphql, actions }) => {
     throw result.errors
   }
 
+  console.log(result.data.allMarkdownRemark.edges.length)
   // Create blog posts pages.
   const posts = result.data.allMarkdownRemark.edges
 
   posts.forEach((post, index) => {
-    // const previous = index === posts.length - 1 ? null : posts[index + 1].node
-    // const next = index === 0 ? null : posts[index - 1].node
 
     const categPrevPost = posts.slice(index + 1, posts.length).find(v =>
       v.node.frontmatter.category === post.node.frontmatter.category)

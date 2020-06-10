@@ -4,6 +4,7 @@ date: "2020-05-31 20:55:33"
 description: "GatsbyJSで作成したサイトをGithubでソース管理、Github Pagesで公開できるようにする。"
 category: "ブログ"
 tags: ["GatsbyJS", "GitHub Pages"]
+published: true
 ---
 
 ## Github Pagesとは

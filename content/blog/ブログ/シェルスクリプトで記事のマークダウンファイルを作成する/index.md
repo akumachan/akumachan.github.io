@@ -4,6 +4,7 @@ date: "2020-06-01 19:54:54"
 description: "GatsbyJSのgatsby-starter-blogでブログ記事を作成するときに記事と同じ名前のディレクトリを作成してその中にindex.mdを作成しなければならないのが面倒だったのでシェルスクリプトを作成した。"
 category: "ブログ"
 tags: ["ShellScript", "GatsbyJS"]
+published: true
 ---
 
 GatsbyJSのスターター"gatsby-starter-blog"で作成している当サイトの記事ファイルを作成するのが結構手間だったのでシェルスクリプトにまとめました。

@@ -4,6 +4,7 @@ date: "2020-06-03 00:53:10"
 description: "このブログはいずれ技術書のような読み方ができるようにしていきたいので、ページ下部のリンクをカテゴリ別に分けることにした。"
 category: "ブログ"
 tags: ["GatsbyJS", "JavaScript","gatsby-starter-blog",]
+published: true
 ---
 
 ## 前後の記事へのリンク

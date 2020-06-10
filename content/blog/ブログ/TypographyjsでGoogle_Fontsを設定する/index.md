@@ -4,6 +4,7 @@ date: "2020-06-03 17:43:57"
 description: "gatsby-starter-blogで使用されているgatsby-plugin-typographyでGoogle Fontsのフォントを設定する。"
 category: "ブログ"
 tags: ["GatsbyJS", "gatsby-starter-blog", "Typography.js", "Google Fonts"]
+published: true
 ---
 
 ブログのフォントを変えようと思い調べてみると、[gatsby-starter-blog](https://www.gatsbyjs.org/starters/gatsbyjs/gatsby-starter-blog/)では[gatsby-plugin-typography](https://www.gatsbyjs.org/packages/gatsby-plugin-typography/)というプラグインが使われているようです。  

@@ -4,6 +4,7 @@ date: "2020-06-02 22:10:32"
 description: "GatsbyJSのコンテンツディレクトリをリネームしたら該当の記事がNot Foundになったので一応備忘録。"
 category: "ブログ"
 tags: ["GatsbyJS","gatsby-starter-blog","GitHub Pages"]
+published: true
 ---
 
 ## Not Found
