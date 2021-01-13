@@ -3,7 +3,8 @@ title: "curlでリクエストボディに改行を含める方法"
 date: "2021-01-13 15:47:45"
 description: "curlで -d オプションでデータを指定する際に、リクエストボディに改行コードを含めたかったので調べた。"
 category: "シェルスクリプト"
-tags: []
+tags: ["curl", "Shell script"]
+published: true
 ---
 
 # 普通に`-d`に`\n`とか書いても文字列として認識されてしまう
