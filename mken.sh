@@ -14,6 +14,7 @@ echo "date: \"`date "+%Y-%m-%d %H:%M:%S"`\"" >> ${file}
 echo "description: \"\"" >> ${file}
 echo "category: \"${1}\"" >> ${file}
 echo "tags: []" >> ${file}
+echo "published: true" >> ${file}
 echo "---" >> ${file}
 
 echo "Create ${file}"
