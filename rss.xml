@@ -1,0 +1,605 @@
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[悪魔のオコトバ]]></title><description><![CDATA[勉強したことや調べたことを忘れないように書き記します。]]></description><link>https://akumachan.github.io</link><generator>GatsbyJS</generator><lastBuildDate>Thu, 14 Jan 2021 00:42:02 GMT</lastBuildDate><item><title><![CDATA[[Git]リモートリポジトリの全ブランチをプルする]]></title><description><![CDATA[git pullは現在チェックアウトしているブランチしかフェッチしない ワガハイは仕事でプロジェクトのgit…]]></description><link>https://akumachan.github.io/Git/[Git]リモートリポジトリの全ブランチをプルする/</link><guid isPermaLink="false">https://akumachan.github.io/Git/[Git]リモートリポジトリの全ブランチをプルする/</guid><pubDate>Wed, 13 Jan 2021 18:09:54 GMT</pubDate><content:encoded>&lt;h2&gt;git pullは現在チェックアウトしているブランチしかフェッチしない&lt;/h2&gt;
+&lt;p&gt;ワガハイは仕事でプロジェクトのgitをほとんど１人で操作している（作業者が１人）のですが、頻繁にブランチを切り替えて作業しているためあっちでプッシュしてこっちでプルしてみたいな場面が多くあります。&lt;br&gt;
+その中で、ブランチ間をスイッチしながら作業しているとプルして最新のソースで作業していたつもりなのにし損ねていてて混乱することがあります。  &lt;/p&gt;
+&lt;p&gt;なので、もういっそ&lt;code class=&quot;language-text&quot;&gt;git pull&lt;/code&gt;を&lt;code class=&quot;language-text&quot;&gt;git pull --all&lt;/code&gt;にしてしまいましょう。  &lt;/p&gt;
+&lt;h2&gt;使用するコマンド&lt;/h2&gt;
+&lt;h3&gt;git pull —all&lt;/h3&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;git pull --all&lt;/code&gt;はローカルでトラッキングしているブランチをすべてプルしてくれるそうです。  &lt;/p&gt;
+&lt;h3&gt;トラッキングしていないブランチもすべてプル&lt;/h3&gt;
+&lt;p&gt;上記の通り、&lt;code class=&quot;language-text&quot;&gt;git pull --all&lt;/code&gt;はトラッキングしているブランチしかプルしてくれません。トラッキングしていないブランチもすべてプルしたい場合はこちらを実行するようです。&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;sh&quot;&gt;&lt;pre class=&quot;language-sh&quot;&gt;&lt;code class=&quot;language-sh&quot;&gt;git branch -r | grep -v &amp;#39;\-&amp;gt;&amp;#39; | while read remote; do git branch --track &amp;quot;${remote#origin/}&amp;quot; &amp;quot;$remote&amp;quot;; done
+git pull --all&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;※参考にしたStack Overflowの回答者さんは&lt;code class=&quot;language-text&quot;&gt;git pull --all&lt;/code&gt;の前に念の為&lt;code class=&quot;language-text&quot;&gt;git fetch --all&lt;/code&gt;も実行しているそうです。&lt;br&gt;
+&lt;code class=&quot;language-text&quot;&gt;git pull&lt;/code&gt;には&lt;code class=&quot;language-text&quot;&gt;git fetch&lt;/code&gt;も含まれているはずなのでどういう場合の念の為なのかはよくわかりませんが。&lt;/p&gt;
+&lt;h2&gt;エイリアスを作成&lt;/h2&gt;
+&lt;p&gt;今回は&lt;code class=&quot;language-text&quot;&gt;git pull --all&lt;/code&gt;だけでいいので、こちらを&lt;code class=&quot;language-text&quot;&gt;git pull&lt;/code&gt;に設定します。&lt;/p&gt;
+&lt;h3&gt;設定ファイル&lt;/h3&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;影響範囲&lt;/th&gt;
+&lt;th&gt;設定ファイル&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;システム全体&lt;/td&gt;
+&lt;td&gt;/etc/gitconfig&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;ユーザー&lt;/td&gt;
+&lt;td&gt;~/.gitconfig&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;リポジトリ&lt;/td&gt;
+&lt;td&gt;リポジトリのルートディレクトリ/.git/config&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3&gt;設定方法&lt;/h3&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;sh:/etc/gitconfig&quot;&gt;&lt;pre class=&quot;language-sh:/etc/gitconfig&quot;&gt;&lt;code class=&quot;language-sh:/etc/gitconfig&quot;&gt;[alias]
+    pull = pull --all&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;ちなみに&lt;code class=&quot;language-text&quot;&gt;/etc/gitconfig/&lt;/code&gt;は&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;sh&quot;&gt;&lt;pre class=&quot;language-sh&quot;&gt;&lt;code class=&quot;language-sh&quot;&gt;git config --global --edit&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;で編集可能。&lt;/p&gt;
+&lt;h2&gt;参考&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&quot;https://stackoverflow.com/questions/10312521/how-to-fetch-all-git-branches/21591209&quot;&gt;How to fetch all Git branches - Stack Overflow&lt;/a&gt;&lt;br&gt;
+&lt;a href=&quot;https://qiita.com/chihiro/items/04813c707cc665de67c5&quot;&gt;【git】aliasの設定方法 - Qiita&lt;/a&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[curlでリクエストボディに改行を含める方法]]></title><description><![CDATA[普通ににとか書いても文字列として認識されてしまう これだとが改行コードではなく文字列として認識されてしまいます。 -d…]]></description><link>https://akumachan.github.io/シェルスクリプト/curlでリクエストボディに改行を含める方法/</link><guid isPermaLink="false">https://akumachan.github.io/シェルスクリプト/curlでリクエストボディに改行を含める方法/</guid><pubDate>Wed, 13 Jan 2021 15:47:45 GMT</pubDate><content:encoded>&lt;h2&gt;普通に&lt;code class=&quot;language-text&quot;&gt;-d&lt;/code&gt;に&lt;code class=&quot;language-text&quot;&gt;\n&lt;/code&gt;とか書いても文字列として認識されてしまう&lt;/h2&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;sh&quot;&gt;&lt;pre class=&quot;language-sh&quot;&gt;&lt;code class=&quot;language-sh&quot;&gt;curl -X POST -d &amp;quot;改行を入れたいです\n入りましたか？&amp;quot; http://example.com/api&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;これだと&lt;code class=&quot;language-text&quot;&gt;\n&lt;/code&gt;が改行コードではなく文字列として認識されてしまいます。&lt;/p&gt;
+&lt;h2&gt;-d オプションの引数を工夫する&lt;/h2&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;-d&lt;/code&gt;オプションの引数を&lt;code class=&quot;language-text&quot;&gt;$&amp;#39;文字列&amp;#39;&lt;/code&gt;の形にすると文字列内の&lt;code class=&quot;language-text&quot;&gt;\n&lt;/code&gt;を改行コードとして認識してくれる。&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;sh&quot;&gt;&lt;pre class=&quot;language-sh&quot;&gt;&lt;code class=&quot;language-sh&quot;&gt;curl -X POST -d $&amp;#39;改行を入れたいです\n入りましたね？&amp;#39; http://example.com/api&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;クォーテーションはシングルクォーテーションじゃないとだめです。&lt;/p&gt;</content:encoded></item><item><title><![CDATA[Philips Hueの電球をGoogle Homeで音声コントロールする]]></title><description><![CDATA[PC裏を照らしている電球が切れたので、Philips Hue…]]></description><link>https://akumachan.github.io/スマートホーム/Philips_Hueの電球をGoogle_Homeで音声コントロールする/</link><guid isPermaLink="false">https://akumachan.github.io/スマートホーム/Philips_Hueの電球をGoogle_Homeで音声コントロールする/</guid><pubDate>Sat, 06 Jun 2020 20:08:17 GMT</pubDate><content:encoded>&lt;p&gt;PC裏を照らしている電球が切れたので、Philips Hueというスマート電球を買ってみました。&lt;br&gt;
+クリップ型のスタンドライトのスイッチをいちいち切るのが面倒でずっとつけっぱなしにしていたら白熱電球は一瞬で切れました。  &lt;/p&gt;
+  &lt;iframe style=&quot;width:120px;height:240px;&quot; marginwidth=&quot;0&quot; marginheight=&quot;0&quot; scrolling=&quot;no&quot; frameborder=&quot;0&quot; src=&quot;https://rcm-fe.amazon-adsystem.com/e/cm?ref=tf_til&amp;t=akumachan-22&amp;m=amazon&amp;o=9&amp;p=8&amp;l=as1&amp;IS2=1&amp;detail=1&amp;asins=B01MSITPT1&amp;linkId=c279bdb409bde4daf2ad23b4a581fadc&amp;bc1=000000&amp;lt1=_top&amp;fc1=333333&amp;lc1=0066c0&amp;bg1=ffffff&amp;f=ifr&quot;&gt;
+    &lt;/iframe&gt;
+&lt;p&gt;スマートスピーカーにして声で操作できるようになったら便利かな、ということでGoogle nest miniと連携できそうなスマート電球を購入しました。&lt;/p&gt;
+&lt;h2&gt;やること&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Hueの初期設定&lt;/li&gt;
+&lt;li&gt;Google Homeへの登録&lt;/li&gt;
+&lt;li&gt;ルーティンの設定&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Google Homeはすでに使用しているものとします。&lt;/p&gt;
+&lt;h2&gt;周辺機器&lt;/h2&gt;
+&lt;p&gt;Philips Hueの説明書は文字がないユニバーサル？なデザインになっているんですが、本商品に含まれていない関連商品もイラストでしか載っていないので、それがなんなのか、必要なものなのかわからずに苦労しました。&lt;br&gt;
+まずは周辺機器の説明をしますが、今回使用するPhilips Hue本体とGoogle nest mini（もしくはそれに準ずるGoogleアシスタント）、スマートフォンのみで、周辺機器は必要ないのでカッコ付きの項目は読み飛ばして構いません。  &lt;/p&gt;
+&lt;h3&gt;（Hue Bridge）&lt;/h3&gt;
+&lt;p&gt;Hue Bridgeは複数のHueを管理、音声でコントロールできるターミナルのような端末です。  &lt;/p&gt;
+&lt;iframe style=&quot;width:120px;height:240px;&quot; marginwidth=&quot;0&quot; marginheight=&quot;0&quot; scrolling=&quot;no&quot; frameborder=&quot;0&quot; src=&quot;https://rcm-fe.amazon-adsystem.com/e/cm?ref=tf_til&amp;t=akumachan-22&amp;m=amazon&amp;o=9&amp;p=8&amp;l=as1&amp;IS2=1&amp;detail=1&amp;asins=B01C6S7DDA&amp;linkId=06e5f41b9b47d355499b12e34f9c0e7f&amp;bc1=000000&amp;lt1=_top&amp;fc1=333333&amp;lc1=0066c0&amp;bg1=ffffff&amp;f=ifr&quot;&gt;
+    &lt;/iframe&gt;
+  
+ですが、Bridgeを使わなくてもGoogleアシスタントで音声コントロールは可能です。
+&lt;h3&gt;（Dimmer スイッチ）&lt;/h3&gt;
+&lt;p&gt;Dimmer スイッチは複数のHueと連携できるリモコンです。これも今回は使用しません。&lt;/p&gt;
+&lt;iframe style=&quot;width:120px;height:240px;&quot; marginwidth=&quot;0&quot; marginheight=&quot;0&quot; scrolling=&quot;no&quot; frameborder=&quot;0&quot; src=&quot;https://rcm-fe.amazon-adsystem.com/e/cm?ref=tf_til&amp;t=akumachan-22&amp;m=amazon&amp;o=9&amp;p=8&amp;l=as1&amp;IS2=1&amp;detail=1&amp;asins=B0769L5QG5&amp;linkId=e817b5344676dd494e1cc4ae2f170fd8&amp;bc1=000000&amp;lt1=_top&amp;fc1=333333&amp;lc1=0066c0&amp;bg1=ffffff&amp;f=ifr&quot;&gt;
+    &lt;/iframe&gt;
+&lt;h2&gt;Hueの初期設定&lt;/h2&gt;
+&lt;p&gt;今回はHueをPhilips Hue Bluetoothというアプリ&lt;a href=&quot;https://play.google.com/store/apps/details?id=com.signify.hue.blue&amp;#x26;hl=ja&quot;&gt;Android&lt;/a&gt; &lt;a href=&quot;https://apps.apple.com/jp/app/philips-hue-bluetooth/id1456604186&quot;&gt;iOS&lt;/a&gt;で初期設定します。&lt;br&gt;
+なんやかんやユーザー登録などを済ませてください（適当）。&lt;br&gt;
+Googleアシスタントと同じ部屋に登録してください。&lt;/p&gt;
+&lt;h3&gt;Google HomeでHueを確認&lt;/h3&gt;
+&lt;p&gt;Google Homeアプリに移動してGoogleアシスタントと同じ部屋にHueが登録されているか確認してください。  &lt;/p&gt;
+&lt;h2&gt;ルーティンを設定&lt;/h2&gt;
+&lt;p&gt;これで「&amp;#x3C;&amp;#x3C;登録した電球の名前&gt;&gt;つけて」で電気がつくと思ったんですが、「（無音）が見つかりません」と言われて電球をコントロールできませんでした。&lt;br&gt;
+もしこれでコントロールできていれば以降は読む必要ありません。&lt;/p&gt;
+&lt;p&gt;試行錯誤した結果、「電気つけて」というワードでHueをオンにするルーティン（と逆にオフのルーティン）を作成することでコントロールできるようになりました。&lt;br&gt;
+Google Homeで&lt;code class=&quot;language-text&quot;&gt;ルーティン &amp;gt; ルーティンを管理 &amp;gt; ルーティンを追加&lt;/code&gt;でコマンドに「電気つけて」アシスタントが行う動作に&lt;code class=&quot;language-text&quot;&gt;よく利用する操作 &amp;gt; 照明やコンセントの操作 &amp;gt; 歯車アイコン&lt;/code&gt;でHueの動作を「オンにする」にします。  &lt;/p&gt;
+&lt;h2&gt;ついた&lt;/h2&gt;
+&lt;p&gt;「電気つけて」  &lt;/p&gt;
+&lt;p&gt;ね？ついたでしょ？（なに、付かない？すまない。）&lt;/p&gt;</content:encoded></item><item><title><![CDATA[GatsbyJSのソースをPushしたら自動でビルドしてGithub Pagesにデプロイする]]></title><description><![CDATA[GatsbyJSでブログ記事を書いてgh-pages（参考:GatsbyJSのサイトをGithub Pagesで公開する）でGithub Pagesにデプロイしていましたが、ソースファイルのPushとデプロイを別でやらなきゃいけないのは大変だったので、Push…]]></description><link>https://akumachan.github.io/ブログ/GatsbyJSのソースをpushしたら自動でビルドしてGithub Pagesにデプロイする/</link><guid isPermaLink="false">https://akumachan.github.io/ブログ/GatsbyJSのソースをpushしたら自動でビルドしてGithub Pagesにデプロイする/</guid><pubDate>Fri, 05 Jun 2020 17:38:47 GMT</pubDate><content:encoded>&lt;p&gt;GatsbyJSでブログ記事を書いてgh-pages（参考:&lt;a href=&quot;../GatsbyJS%E3%81%AE%E3%82%B5%E3%82%A4%E3%83%88%E3%82%92Github_Pages%E3%81%A7%E5%85%AC%E9%96%8B%E3%81%99%E3%82%8B/&quot;&gt;GatsbyJSのサイトをGithub Pagesで公開する&lt;/a&gt;）でGithub Pagesにデプロイしていましたが、ソースファイルのPushとデプロイを別でやらなきゃいけないのは大変だったので、Pushしたら自動でデプロイできるように設定しました。&lt;br&gt;
+Github Actionsという機能で実現できるようです。&lt;/p&gt;
+&lt;h2&gt;やること&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Github Actionsで使用するアクセストークンを準備&lt;/li&gt;
+&lt;li&gt;Github Actionsを設定&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;構成&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Github Pagesのユーザーページ（アドレスが&lt;code class=&quot;language-text&quot;&gt;https://username.github.io&lt;/code&gt;）でサイトを公開&lt;/li&gt;
+&lt;li&gt;ソースは&lt;code class=&quot;language-text&quot;&gt;source&lt;/code&gt;リポジトリで管理&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;アクセストークンの準備&lt;/h2&gt;
+&lt;h2&gt;トークンの作成&lt;/h2&gt;
+&lt;p&gt;Github右上ののユーザーアイコンから&lt;code class=&quot;language-text&quot;&gt;Settings &amp;gt; Developer settings &amp;gt; Personal access tokens&lt;/code&gt;にて、Actionで使用するアクセストークンを生成します。  &lt;/p&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 590px; &quot;
+    &gt;
+      &lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;/static/7916b2edf606a5886d8bdbce632376ac/54bf4/generateAccessToken.png&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+    &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 31.08108108108108%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAGCAYAAADDl76dAAAACXBIWXMAAAsSAAALEgHS3X78AAAA4UlEQVQY022R2W4FIQxD+f//7Etb9oSdcc1Mn64G6QgJxY4TjLSNpAMpRTgfUFvD29nXheuDt2PGvBB0Y+3n4RTmLLDOw7OBtQ699w/ZYyai+P6xsKzTmKDWw4g2fP0qMu8xBvY+hhneOThirUWM8RanlJDYzMtEn5u1+9aMObHWwuJtqgpHfdIcwUlY+4LNEzYNBIq1FKgqDdbNXBcn2mhcT2P6TtPOmsZm5m0PWipcyHBRSUFISoTpCiepNKooNMgiNye9/mPeFn12dhJl7Yg6+WkPQfh5Zd6jnoT7E+r/AAaP1I2MGFBBAAAAAElFTkSuQmCC&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;アクセストークン生成&quot;
+        title=&quot;アクセストークン生成&quot;
+        src=&quot;/static/7916b2edf606a5886d8bdbce632376ac/fcda8/generateAccessToken.png&quot;
+        srcset=&quot;/static/7916b2edf606a5886d8bdbce632376ac/12f09/generateAccessToken.png 148w,
+/static/7916b2edf606a5886d8bdbce632376ac/e4a3f/generateAccessToken.png 295w,
+/static/7916b2edf606a5886d8bdbce632376ac/fcda8/generateAccessToken.png 590w,
+/static/7916b2edf606a5886d8bdbce632376ac/efc66/generateAccessToken.png 885w,
+/static/7916b2edf606a5886d8bdbce632376ac/54bf4/generateAccessToken.png 1007w&quot;
+        sizes=&quot;(max-width: 590px) 100vw, 590px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+      /&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;public_repo Access public repository&lt;/code&gt;にチェックを入れてトークンを生成します。&lt;br&gt;
+生成されたトークンをコピーしておいてください。&lt;/p&gt;
+&lt;h2&gt;トークンを環境変数に設定&lt;/h2&gt;
+&lt;p&gt;リポジトリの&lt;code class=&quot;language-text&quot;&gt;Settings &amp;gt; Secrets &amp;gt; New secret&lt;/code&gt;から先ほどのトークンを暗号化された環境変数として登録します。&lt;br&gt;
+今回は&lt;code class=&quot;language-text&quot;&gt;Name&lt;/code&gt;は&lt;code class=&quot;language-text&quot;&gt;ACCESS_TOKEN&lt;/code&gt;と設定します。&lt;code class=&quot;language-text&quot;&gt;Value&lt;/code&gt;に先ほどコピーしたトークンをペーストして&lt;code class=&quot;language-text&quot;&gt;Add secrets&lt;/code&gt;を押します。  &lt;/p&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 590px; &quot;
+    &gt;
+      &lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;/static/5821dedd5f10251978702f1c0227a0c6/3dde1/registerToken.png&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+    &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 54.05405405405405%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAALCAYAAAB/Ca1DAAAACXBIWXMAAAsSAAALEgHS3X78AAABVUlEQVQoz42SW2/DIAyF8///2572tpepU7eubZqEWwIYOLPJpRdN6yx9ggRzMMc03gdYN8JYwcGOE5TScOPITBVZU9rWueRqY6El10muQXf4gjqfECmhCTEhREJKhMgjEUG7iMEGFjF1s2MR4mRKC0TXb5nnjJQLMtP0lnDoIwJl1CgFnYm4mAStFdr2zIIWy+LCL8H7CtMoRziryCfk+kPi+3TBbn9E2/O1A2CmAuXShmakolmn3FEFTyx4+1P80nbC5IntyJVIM2EZ84PQVXBM2F8i+zFXmLlSaVQk8fXGrwdkXTyv4zbnpijrcex9vcIqKGavzfqbdMMs2gzdgMGMmx/SKTnRL5tireY5Yam2MWNkv3y93ipQpOEMiWdPq7yn6ZTDx6HjKgM3IXLZCUfX4q17h/a2vhJ5AfkfSF5DqWCKpXZufTY7/YmX4ysGrzYr/hs/KHZd6j1SvXMAAAAASUVORK5CYII=&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;アクセストークンを環境変数に設定&quot;
+        title=&quot;アクセストークンを環境変数に設定&quot;
+        src=&quot;/static/5821dedd5f10251978702f1c0227a0c6/fcda8/registerToken.png&quot;
+        srcset=&quot;/static/5821dedd5f10251978702f1c0227a0c6/12f09/registerToken.png 148w,
+/static/5821dedd5f10251978702f1c0227a0c6/e4a3f/registerToken.png 295w,
+/static/5821dedd5f10251978702f1c0227a0c6/fcda8/registerToken.png 590w,
+/static/5821dedd5f10251978702f1c0227a0c6/efc66/registerToken.png 885w,
+/static/5821dedd5f10251978702f1c0227a0c6/3dde1/registerToken.png 1018w&quot;
+        sizes=&quot;(max-width: 590px) 100vw, 590px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+      /&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;h2&gt;Github ActionsのWorkflowを作成&lt;/h2&gt;
+&lt;p&gt;Github ActionsのWorkflowはソースのブランチの&lt;code class=&quot;language-text&quot;&gt;.github/workflows&lt;/code&gt;に設定を記したymlファイルを置いておくだけで機能するようです。&lt;br&gt;
+今回は以下の内容でymlファイルを作成しました。  &lt;/p&gt;
+&lt;p&gt;&lt;em&gt;github/workflows/Gatsby-publish.yml&lt;/em&gt;&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;yml&quot;&gt;&lt;pre class=&quot;language-yml&quot;&gt;&lt;code class=&quot;language-yml&quot;&gt;&lt;span class=&quot;token key atrule&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; Gatsby Publish
+
+&lt;span class=&quot;token key atrule&quot;&gt;on&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;token key atrule&quot;&gt;push&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;token key atrule&quot;&gt;branches&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;token punctuation&quot;&gt;-&lt;/span&gt; source
+
+&lt;span class=&quot;token key atrule&quot;&gt;jobs&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;token key atrule&quot;&gt;build&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;token key atrule&quot;&gt;runs-on&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; ubuntu&lt;span class=&quot;token punctuation&quot;&gt;-&lt;/span&gt;latest
+    &lt;span class=&quot;token key atrule&quot;&gt;steps&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;token punctuation&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;token key atrule&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; actions/checkout@v1
+      &lt;span class=&quot;token punctuation&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;token key atrule&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; enriikke/gatsby&lt;span class=&quot;token punctuation&quot;&gt;-&lt;/span&gt;gh&lt;span class=&quot;token punctuation&quot;&gt;-&lt;/span&gt;pages&lt;span class=&quot;token punctuation&quot;&gt;-&lt;/span&gt;action@v2
+        &lt;span class=&quot;token key atrule&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+          &lt;span class=&quot;token key atrule&quot;&gt;access-token&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; $&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt; secrets.ACCESS_TOKEN &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;マーケットプレイスで公開されている&lt;a href=&quot;https://github.com/marketplace/actions/gatsby-publish&quot;&gt;こちら&lt;/a&gt;のActionを呼び出しているだけです。&lt;br&gt;
+アクセストークンには先ほど設定した環境変数を書きます。&lt;br&gt;
+ビルドしたファイルはデフォルトでは&lt;code class=&quot;language-text&quot;&gt;master&lt;/code&gt;ブランチにPushされます。変更したい場合は上記リンク参照。&lt;/p&gt;
+&lt;p&gt;これだけでPushしたときに勝手にビルドしてくれます。便利！&lt;/p&gt;</content:encoded></item><item><title><![CDATA[TypographyjsでGoogle Fontsを設定する]]></title><description><![CDATA[ブログのフォントを変えようと思い調べてみると、gatsby-starter-blogではgatsby-plugin-typographyというプラグインが使われているようです。   Typography.js gatsby-plugin-typografyはTypography…]]></description><link>https://akumachan.github.io/ブログ/TypographyjsでGoogle_Fontsを設定する/</link><guid isPermaLink="false">https://akumachan.github.io/ブログ/TypographyjsでGoogle_Fontsを設定する/</guid><pubDate>Wed, 03 Jun 2020 17:43:57 GMT</pubDate><content:encoded>&lt;p&gt;ブログのフォントを変えようと思い調べてみると、&lt;a href=&quot;https://www.gatsbyjs.org/starters/gatsbyjs/gatsby-starter-blog/&quot;&gt;gatsby-starter-blog&lt;/a&gt;では&lt;a href=&quot;https://www.gatsbyjs.org/packages/gatsby-plugin-typography/&quot;&gt;gatsby-plugin-typography&lt;/a&gt;というプラグインが使われているようです。  &lt;/p&gt;
+&lt;h2&gt;Typography.js&lt;/h2&gt;
+&lt;p&gt;gatsby-plugin-typografyは&lt;a href=&quot;https://kyleamathews.github.io/typography.js/&quot;&gt;Typography.js&lt;/a&gt;のGatsbyJS用プラグインです。&lt;br&gt;
+タイポグラフィとは文字のフォントや構成を整える技術のようですね。要するに文字周りを綺麗に整えてくれるライブラリです。  &lt;/p&gt;
+&lt;h3&gt;設定ファイル&lt;/h3&gt;
+&lt;p&gt;gatsby-starter-blogでは&lt;code class=&quot;language-text&quot;&gt;/src/utils/typography.js&lt;/code&gt;が設定ファイルです。&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;typography.js&lt;/em&gt;&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;js&quot;&gt;&lt;pre class=&quot;language-js&quot;&gt;&lt;code class=&quot;language-js&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; Typography &lt;span class=&quot;token keyword&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;typography&quot;&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; Wordpress2016 &lt;span class=&quot;token keyword&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;typography-theme-wordpress-2016&quot;&lt;/span&gt;
+
+Wordpress2016&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function-variable function&quot;&gt;overrideThemeStyles&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&gt;&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;token keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;token string&quot;&gt;&quot;a.gatsby-resp-image-link&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+      boxShadow&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token template-string&quot;&gt;&lt;span class=&quot;token template-punctuation string&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;none&lt;/span&gt;&lt;span class=&quot;token template-punctuation string&quot;&gt;`&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;token keyword&quot;&gt;delete&lt;/span&gt; Wordpress2016&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;googleFonts
+
+&lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; typography &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;Typography&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;Wordpress2016&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;token comment&quot;&gt;// Hot reload typography in development.&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;process&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;env&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token constant&quot;&gt;NODE_ENV&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;!==&lt;/span&gt; &lt;span class=&quot;token template-string&quot;&gt;&lt;span class=&quot;token template-punctuation string&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;production&lt;/span&gt;&lt;span class=&quot;token template-punctuation string&quot;&gt;`&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+  typography&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;injectStyles&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;token keyword&quot;&gt;export&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;default&lt;/span&gt; typography
+&lt;span class=&quot;token keyword&quot;&gt;export&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; rhythm &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; typography&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;rhythm
+&lt;span class=&quot;token keyword&quot;&gt;export&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; scale &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; typography&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;scale&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;あらかじめWordpress2016というテーマが設定されているようです。テーマは変えずに必要な部分だけを設定します。  &lt;/p&gt;
+&lt;h3&gt;フォントを変える&lt;/h3&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;js&quot;&gt;&lt;pre class=&quot;language-js&quot;&gt;&lt;code class=&quot;language-js&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; Typography &lt;span class=&quot;token keyword&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;typography&quot;&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; Wordpress2016 &lt;span class=&quot;token keyword&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;typography-theme-wordpress-2016&quot;&lt;/span&gt;
+
+Wordpress2016&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;headerFontFamily &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&apos;M PLUS 1p&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos;Roboto&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos;serif&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;
+Wordpress2016&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;bodyFontFamily &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&apos;M PLUS 1p&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos;Roboto&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos;serif&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;delete&lt;/span&gt; Wordpress2016&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;googleFonts
+Wordpress2016&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;googleFonts &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;
+  &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+    name&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos;M PLUS 1p&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+    styles&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&apos;400&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+    name&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos;Kosugi Maru&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+    styles&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;
+  &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;.headerFontFamily&lt;/code&gt;でヘッダーのフォントを設定できます。&lt;br&gt;
+&lt;code class=&quot;language-text&quot;&gt;.bodyFontFamily&lt;/code&gt;でボディのフォントを設定できます。&lt;br&gt;
+&lt;code class=&quot;language-text&quot;&gt;.googleFonts&lt;/code&gt;で使用する&lt;a href=&quot;https://fonts.google.com/&quot;&gt;Google Fonts&lt;/a&gt;のフォントとスタイルを指定します。  &lt;/p&gt;
+&lt;h3&gt;h1だけフォントが変更されない&lt;/h3&gt;
+&lt;p&gt;よしこれで完成、と思いきや見出し&lt;code class=&quot;language-text&quot;&gt;h1&lt;/code&gt;だけフォントが変更されません。&lt;/p&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 590px; &quot;
+    &gt;
+      &lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;/static/4ae0f96d67c8d720bffbcca442a83997/f6386/h1fontnotchanged.png&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+    &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 70.94594594594594%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAOCAYAAAAvxDzwAAAACXBIWXMAAAsSAAALEgHS3X78AAACKElEQVQ4y51TW47aQBDkeJyBmyDuwAW4AeKHDyTERzZIQZGSDxIeVoDFLGAb26yN32+7Mt1AlJCNlKSldveMZso1UzW1siwhSRIOhwM2mw0sy4LrukjTFLZtIwgCRFHElSKOY5imiXtUVYWfo1YUBRqNBprNJur1OlqtFjqdDnq9HtrtNhaLBbrdLvr9PmazGYbDIUaj0Q+wx6wRw6endxiPxxgMBphMJliv1zgej9A0DYZhYD6fQ1VVZna5XJg57XsravjPIEA6XZ4XXClpjgGH779iJu1wNg3BRIOu68yOWBIz6okdsaXx6XTiez6fz7CtV+hiTGvo3hmQjuF7HgMRyHK5xG6346OuVisGIkA6qizL2O/3UBQFpgBUTQeqYQkMm1nW7ioRXd/3kSQJ/52SesogCJFmGStMitMcrc3yHJdI7EuqX++wLKvf5P+3qFDeVf4rAarrhkeQN1XOigpLNYQk8uU1xkaP8Gxcc6kE+LT1OKn/LHv4+Oziy97Hh7W4u0sCxU5gehmvZ4ZpXuKbFkA2Q+hOCt3NcbRzvFgZJC2CHZbMRfwXmbBeKpqsoHqdK29Z3GzJxnaFQqahw3Md5FkqqiuE8FEWOUJRYyEEiRGFgbBGgkxkEkcsUpLEwos5z7MPM6GeLO9wFDbYbmV+09PpVDyzORThOXo1ZBXyHvnOcRx4wmJkIbIbjQmY5gi4Rh8aEHAYhmxOsgX1lNnNLn96ao/xHQkNJ2NcvMnkAAAAAElFTkSuQmCC&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;見出しだけ変更されない&quot;
+        title=&quot;見出しだけ変更されない&quot;
+        src=&quot;/static/4ae0f96d67c8d720bffbcca442a83997/fcda8/h1fontnotchanged.png&quot;
+        srcset=&quot;/static/4ae0f96d67c8d720bffbcca442a83997/12f09/h1fontnotchanged.png 148w,
+/static/4ae0f96d67c8d720bffbcca442a83997/e4a3f/h1fontnotchanged.png 295w,
+/static/4ae0f96d67c8d720bffbcca442a83997/fcda8/h1fontnotchanged.png 590w,
+/static/4ae0f96d67c8d720bffbcca442a83997/f6386/h1fontnotchanged.png 686w&quot;
+        sizes=&quot;(max-width: 590px) 100vw, 590px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+      /&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;ソースを見てみると、Wordpress2016テーマの中で&lt;code class=&quot;language-text&quot;&gt;h1&lt;/code&gt;を含む一部の要素に対しスタイルが個別で設定されており、そちらが優先されているようです。  &lt;/p&gt;
+&lt;p&gt;&lt;em&gt;/node_modules/typography-theme-wordpress-2016/dist/index.js&lt;/em&gt;&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;js&quot;&gt;&lt;pre class=&quot;language-js&quot;&gt;&lt;code class=&quot;language-js&quot;&gt;  &lt;span class=&quot;token function-variable function&quot;&gt;overrideStyles&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;overrideStyles&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token parameter&quot;&gt;_ref&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; options&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;token keyword&quot;&gt;var&lt;/span&gt; _ref2&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+
+    &lt;span class=&quot;token keyword&quot;&gt;var&lt;/span&gt; adjustFontSizeTo &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; _ref&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;adjustFontSizeTo&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+        scale &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; _ref&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;scale&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+        rhythm &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; _ref&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;rhythm&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;token keyword&quot;&gt;return&lt;/span&gt; _ref2 &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+      h1&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+        fontFamily&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;Montserrat&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;sans-serif&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;,&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+      &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+      blockquote&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;_extends&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;scale&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+        color&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; _grayPercentage2&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;default&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;41&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+        fontStyle&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;italic&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+        paddingLeft&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;rhythm&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;13&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;16&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+        marginLeft&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;rhythm&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+        borderLeft&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;rhythm&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;16&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot; solid &quot;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; _grayPercentage2&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;default&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+      &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;
+      （省略）&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;なのでこれを設定してあげましょう。  &lt;/p&gt;
+&lt;p&gt;&lt;em&gt;typography.js&lt;/em&gt;&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;js&quot;&gt;&lt;pre class=&quot;language-js&quot;&gt;&lt;code class=&quot;language-js&quot;&gt;Wordpress2016&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function-variable function&quot;&gt;overrideThemeStyles&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&gt;&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;token keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;token string&quot;&gt;&quot;a.gatsby-resp-image-link&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+      boxShadow&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token template-string&quot;&gt;&lt;span class=&quot;token template-punctuation string&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;none&lt;/span&gt;&lt;span class=&quot;token template-punctuation string&quot;&gt;`&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+    h1&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+      fontFamily&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;Kosugi Maru&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;Roboto&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;serif&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;,&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align=&quot;center&quot;&gt;&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align=&quot;center&quot;&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 590px; &quot;
+    &gt;
+      &lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;/static/8e4a42c9b129791934f9fc7f5a9b5e2d/7de01/h1fontchanged.png&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+    &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 47.972972972972975%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAKCAYAAAC0VX7mAAAACXBIWXMAAAsSAAALEgHS3X78AAABV0lEQVQoz51SbWrDMAzttXuFXqOn6J8eoFAoFDZYMko/kjjfaeI4TuLkzVKXQUfHtgoekiXZkp48g5Xz+QzHcVhXVYXr9Yq6riGlhNYaRVHAGEOpGMfxIabYjIzlcon5fI7FYoH1eo3VaoXtdovNZsOFdrsduq7724O3w4hhMOj7/u7Sf2TK5w7fDgIvjoeqLBBFEbIsYx2GISOOY6Rp+nUmWnKbk6YJn8uyvB85TjJcPGGDAsfjkcd0XRf7/R6e50EIwQ+eTieO+76HQIQQcW7vRJZv+X3km1Bl1TTcIVVtrE3LIV9rOaQ4+Ui3/YBEGnTDg5HxyeNz8mApnblB23K6M1CtQWNBNqHWBpLRc2fT0oaftiwKDVdUOEQKXt7BL3pcrCY7rnq8RxqvvoIbNsiV+X3LmSU8CALmjjhKk4R9UlaoLZSqoRuFViteAPFLoI8/8To9+gFQDwJb6xTiJgAAAABJRU5ErkJggg==&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;フォント変更完了&quot;
+        title=&quot;フォント変更完了&quot;
+        src=&quot;/static/8e4a42c9b129791934f9fc7f5a9b5e2d/fcda8/h1fontchanged.png&quot;
+        srcset=&quot;/static/8e4a42c9b129791934f9fc7f5a9b5e2d/12f09/h1fontchanged.png 148w,
+/static/8e4a42c9b129791934f9fc7f5a9b5e2d/e4a3f/h1fontchanged.png 295w,
+/static/8e4a42c9b129791934f9fc7f5a9b5e2d/fcda8/h1fontchanged.png 590w,
+/static/8e4a42c9b129791934f9fc7f5a9b5e2d/7de01/h1fontchanged.png 794w&quot;
+        sizes=&quot;(max-width: 590px) 100vw, 590px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+      /&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;これで&lt;code class=&quot;language-text&quot;&gt;h1&lt;/code&gt;に対してフォントを適用できました。（同時に別の箇所でfont-sizeも変えたのでちょっと文字が小さくなってます）&lt;/p&gt;</content:encoded></item><item><title><![CDATA[[gatsby-starter-blog] 記事下部の前後の記事へのリンクをカテゴリーごとに分ける]]></title><description><![CDATA[前後の記事へのリンク  gatsby-starter-blog…]]></description><link>https://akumachan.github.io/ブログ/[gatsby-starter-blog]_記事下部の前後の記事へのリンクをカテゴリーごとに分ける/</link><guid isPermaLink="false">https://akumachan.github.io/ブログ/[gatsby-starter-blog]_記事下部の前後の記事へのリンクをカテゴリーごとに分ける/</guid><pubDate>Wed, 03 Jun 2020 00:53:10 GMT</pubDate><content:encoded>&lt;h2&gt;前後の記事へのリンク&lt;/h2&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 590px; &quot;
+    &gt;
+      &lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;/static/5f430999ed722d7a4633e15cde4706a5/dc616/links.png&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+    &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 43.24324324324324%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAJCAYAAAAywQxIAAAACXBIWXMAAAsSAAALEgHS3X78AAABBElEQVQoz6VSDWuDMBT0///AgUxwFFtto4mmac33LR9G7GBjYw+Oyz3I5XzPCqG89/hPHe9XRVjn8PZ+AWUzpmkCYwyEkISix3EEpRScc/BlCf2si0fk6ig+ThfcbgRd16FpmoS6rjEMQzLu+x5t2yYeCMX5mg3L/WT4NbLWGkopCCGwrnLXxtrA+ayUhDQeT+0PZtsnB7kL/GmW/mV+e8LScIEfymJ5GtxXg+mu0VEJHs6xJ6QFexj0c0ho3IvJ0Xg31NZjWDSuAZMwuHGdQDamIpudmQQJj/HVphDfbtmFLcs0ozynuPWS3G1JCluX4X8yNMZgnueEuLm4jOOsfvMPxvoEHCfAta/Rkf8AAAAASUVORK5CYII=&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;前後の記事へのリンク&quot;
+        title=&quot;前後の記事へのリンク&quot;
+        src=&quot;/static/5f430999ed722d7a4633e15cde4706a5/fcda8/links.png&quot;
+        srcset=&quot;/static/5f430999ed722d7a4633e15cde4706a5/12f09/links.png 148w,
+/static/5f430999ed722d7a4633e15cde4706a5/e4a3f/links.png 295w,
+/static/5f430999ed722d7a4633e15cde4706a5/fcda8/links.png 590w,
+/static/5f430999ed722d7a4633e15cde4706a5/efc66/links.png 885w,
+/static/5f430999ed722d7a4633e15cde4706a5/dc616/links.png 933w&quot;
+        sizes=&quot;(max-width: 590px) 100vw, 590px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+      /&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;gatsby-starter-blogにデフォルトで実装されていた記事下部の「前後の記事へのリンク」です。&lt;br&gt;
+カテゴリに関係なく日付順に表示されているのですが、このブログを投稿順に読みたいというニーズは（自分を含め）皆無だと思ったので、カテゴリ内での前後の記事を表示するように修正しました。  &lt;/p&gt;
+&lt;p&gt;この記事を書いている時点ではどこにもカテゴリー名は表示していないのですが、そのうちカテゴリー別の目次やまとめページを作る予定なので内部的にはカテゴリー分けをしています。（参照: &lt;a href=&quot;/%E3%83%96%E3%83%AD%E3%82%B0/%E3%82%B7%E3%82%A7%E3%83%AB%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%97%E3%83%88%E3%81%A7%E8%A8%98%E4%BA%8B%E3%81%AE%E3%83%9E%E3%83%BC%E3%82%AF%E3%83%80%E3%82%A6%E3%83%B3%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%82%92%E4%BD%9C%E6%88%90%E3%81%99%E3%82%8B&quot;&gt;シェルスクリプトで記事のマークダウンファイルを作成する&lt;/a&gt;）&lt;/p&gt;
+&lt;h2&gt;現在の実装&lt;/h2&gt;
+&lt;p&gt;まずは元となる現在の実装箇所を探しました。&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;gatsby-node.js&lt;/em&gt;&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;js&quot;&gt;&lt;pre class=&quot;language-js&quot;&gt;&lt;code class=&quot;language-js&quot;&gt;posts&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;forEach&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token parameter&quot;&gt;post&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; index&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&gt;&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; previous &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; index &lt;span class=&quot;token operator&quot;&gt;===&lt;/span&gt; posts&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;length &lt;span class=&quot;token operator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;null&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; posts&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;index &lt;span class=&quot;token operator&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;node
+    &lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; next &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; index &lt;span class=&quot;token operator&quot;&gt;===&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;null&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; posts&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;index &lt;span class=&quot;token operator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;node
+
+    （&lt;span class=&quot;token operator&quot;&gt;...&lt;/span&gt;省略）&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;ここで前後のページの設定をしています。&lt;code class=&quot;language-text&quot;&gt;posts&lt;/code&gt;は全ポストの配列で[0]から日付の降順でポストが格納されています。  &lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;previous&lt;/code&gt;では、現在のポストが最初のポストの場合はnull、それ以外のときは1つ前のポストを設定しています。&lt;br&gt;
+&lt;code class=&quot;language-text&quot;&gt;next&lt;/code&gt;では、現在のポストが最新のポストの場合はnull、それ以外のときは1つ次のポストを設定しています。  &lt;/p&gt;
+&lt;p&gt;記事のページではこの&lt;code class=&quot;language-text&quot;&gt;previous&lt;/code&gt;、&lt;code class=&quot;language-text&quot;&gt;next&lt;/code&gt;を参照してリンクを表示しているようです。&lt;/p&gt;
+&lt;h2&gt;修正&lt;/h2&gt;
+&lt;p&gt;上記のコードをカテゴリ別に表示できるようにします。&lt;/p&gt;
+&lt;h4&gt;カテゴリ情報を取得する&lt;/h4&gt;
+&lt;p&gt;上記コード内の&lt;code class=&quot;language-text&quot;&gt;posts&lt;/code&gt;は、graphQLで取得されていますが、Front Matterの&lt;code class=&quot;language-text&quot;&gt;category&lt;/code&gt;が指定されていないので取得されていません（勝手につけた情報なので当たり前ですが）。&lt;br&gt;
+なのでまずは&lt;code class=&quot;language-text&quot;&gt;posts&lt;/code&gt;の元となる&lt;code class=&quot;language-text&quot;&gt;result&lt;/code&gt;を取得する際に&lt;code class=&quot;language-text&quot;&gt;category&lt;/code&gt;を合わせて取得するように修正します。  &lt;/p&gt;
+&lt;p&gt;&lt;em&gt;gatsby-node.js&lt;/em&gt;  &lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;js&quot;&gt;&lt;pre class=&quot;language-js&quot;&gt;&lt;code class=&quot;language-js&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; result &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;graphql&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;
+  &lt;span class=&quot;token template-string&quot;&gt;&lt;span class=&quot;token template-punctuation string&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;
+    {
+      allMarkdownRemark(
+        sort: { fields: [frontmatter___date], order: DESC }
+        limit: 1000
+      ) {
+        edges {
+          node {
+            fields {
+              slug
+            }
+            frontmatter {
+              title
+              category // &amp;lt;---New!!
+            }
+          }
+        }
+      }
+    }
+  &lt;/span&gt;&lt;span class=&quot;token template-punctuation string&quot;&gt;`&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;これで先ほどの&lt;code class=&quot;language-text&quot;&gt;post&lt;/code&gt;から&lt;code class=&quot;language-text&quot;&gt;category&lt;/code&gt;を取得できるようになりました。  &lt;/p&gt;
+&lt;h3&gt;ポストの設定&lt;/h3&gt;
+&lt;p&gt;次は&lt;code class=&quot;language-text&quot;&gt;previous&lt;/code&gt;と&lt;code class=&quot;language-text&quot;&gt;next&lt;/code&gt;の中身をいじっていきます。&lt;/p&gt;
+&lt;p&gt;行う操作は  &lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;previous&lt;/code&gt;の場合&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;現在のポストより過去のポストを抽出する。&lt;/li&gt;
+&lt;li&gt;順番に同じカテゴリのポストが見つかるまで検索する。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;next&lt;/code&gt;の場合&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;現在のポストより未来のポストを抽出する。&lt;/li&gt;
+&lt;li&gt;順番をリバースする。（近い方から検索するため）&lt;/li&gt;
+&lt;li&gt;順番に同じカテゴリのポストが見つかるまで検索する。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;js&quot;&gt;&lt;pre class=&quot;language-js&quot;&gt;&lt;code class=&quot;language-js&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; categPrevPost &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; posts&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;slice&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;index &lt;span class=&quot;token operator&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; posts&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;length&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;find&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token parameter&quot;&gt;v&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&gt;&lt;/span&gt;
+  v&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;node&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;frontmatter&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;category &lt;span class=&quot;token operator&quot;&gt;===&lt;/span&gt; post&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;node&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;frontmatter&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;category&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; categNextPost &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; posts&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;slice&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; index&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;reverse&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;find&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token parameter&quot;&gt;v&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&gt;&lt;/span&gt;
+  v&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;node&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;frontmatter&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;category &lt;span class=&quot;token operator&quot;&gt;===&lt;/span&gt; post&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;node&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;frontmatter&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;category&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; previous &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;!&lt;/span&gt;categPrevPost &lt;span class=&quot;token operator&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;null&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; categPrevPost&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;node
+&lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; next &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;!&lt;/span&gt;categNextPost &lt;span class=&quot;token operator&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;null&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; categNextPost&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;node&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;もっといい書き方があるかもしれません。あったら教えてください。&lt;br&gt;
+記事が多くなってくるとどれくらい負荷がかかるかわかりませんが、まあローカルのビルドの問題なのでとりあえずこれでよしとしましょう。&lt;/p&gt;</content:encoded></item><item><title><![CDATA[GatsbyJSのコンテンツディレクトリをリネームしたらNot Foundになった]]></title><description><![CDATA[Not Found というディレクトリを（Bが大文字）に変更してGithub Pagesにデプロイしたら404 Not Found…]]></description><link>https://akumachan.github.io/ブログ/GatsbyJSのコンテンツディレクトリをリネームしたらNot_Foundになった/</link><guid isPermaLink="false">https://akumachan.github.io/ブログ/GatsbyJSのコンテンツディレクトリをリネームしたらNot_Foundになった/</guid><pubDate>Tue, 02 Jun 2020 22:10:32 GMT</pubDate><content:encoded>&lt;h2&gt;Not Found&lt;/h2&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;{プロジェクト}/content/blog/blog/&lt;/code&gt;というディレクトリを&lt;code class=&quot;language-text&quot;&gt;{プロジェクト}/content/blog/Blog/&lt;/code&gt;（Bが大文字）に変更してGithub Pagesにデプロイしたら404 Not Foundになってしまいました。  &lt;/p&gt;
+&lt;h2&gt;原因&lt;/h2&gt;
+&lt;p&gt;トップページからのリンクは&lt;code class=&quot;language-text&quot;&gt;Blog&lt;/code&gt;に更新されていたのに、リポジトリを見てみるとファイルのディレクトリは&lt;code class=&quot;language-text&quot;&gt;blog&lt;/code&gt;のままになっていました。  &lt;/p&gt;
+&lt;p&gt;調べてはいませんがGitの仕様でディレクトリの大文字小文字が変わっても更新されないんでしょうね。  &lt;/p&gt;
+&lt;h2&gt;解決&lt;/h2&gt;
+&lt;p&gt;一度&lt;code class=&quot;language-text&quot;&gt;Blog2&lt;/code&gt;という名前にリネームしてデプロイし、&lt;code class=&quot;language-text&quot;&gt;Blog&lt;/code&gt;に戻したら直りました。&lt;/p&gt;
+&lt;h2&gt;と思ったら&lt;/h2&gt;
+&lt;p&gt;挙動が怪しかったので、思い切って&lt;code class=&quot;language-text&quot;&gt;ブログ&lt;/code&gt;に変えました。&lt;/p&gt;</content:encoded></item><item><title><![CDATA[GatsbyJSのマークダウンファイル内で数式を表示する方法]]></title><description><![CDATA[高校数学をイチから勉強していて、学んだことを記事に書き残したくなったので、マークダウンで数式を表現できるライブラリを試してみた。 gatsby-remark-katex gatsby-remark-katexは数式をWEBブラウザで表示させるライブラリKaTeXをGatsby…]]></description><link>https://akumachan.github.io/ブログ/GatsbyJSのマークダウンファイル内で数式を表示する方法/</link><guid isPermaLink="false">https://akumachan.github.io/ブログ/GatsbyJSのマークダウンファイル内で数式を表示する方法/</guid><pubDate>Tue, 02 Jun 2020 08:27:49 GMT</pubDate><content:encoded>&lt;p&gt;高校数学をイチから勉強していて、学んだことを記事に書き残したくなったので、マークダウンで数式を表現できるライブラリを試してみた。&lt;/p&gt;
+&lt;h2&gt;gatsby-remark-katex&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&quot;&quot;&gt;gatsby-remark-katex&lt;/a&gt;は数式をWEBブラウザで表示させるライブラリ&lt;a href=&quot;https://katex.org/&quot;&gt;KaTeX&lt;/a&gt;をGatsbyで使用できるプラグインです。&lt;/p&gt;
+&lt;h2&gt;インストール&lt;/h2&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;sh&quot;&gt;&lt;pre class=&quot;language-sh&quot;&gt;&lt;code class=&quot;language-sh&quot;&gt;yarn add gatsby-transformer-remark gatsby-remark-katex&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;gatsby-remark-katexに必要な&lt;a href=&quot;https://www.gatsbyjs.org/packages/gatsby-transformer-remark/&quot;&gt;gatsby-transformer-remark&lt;/a&gt;はマークダウンをHTMLにパースしてくれるプラグインみたいですが、このサイトで使用しているスターター&lt;a href=&quot;https://www.gatsbyjs.org/starters/gatsbyjs/gatsby-starter-blog/&quot;&gt;gatsby-starter-blog&lt;/a&gt;にはデフォルトで入っているので実際にはインストールする必要はありませんでした。  &lt;/p&gt;
+&lt;p&gt;インストール後に&lt;code class=&quot;language-text&quot;&gt;gatsby-config.js&lt;/code&gt;と&lt;code class=&quot;language-text&quot;&gt;gatsby-browser.js&lt;/code&gt;に修正が必要です。  &lt;/p&gt;
+&lt;p&gt;&lt;em&gt;gatsby-config.js&lt;/em&gt;&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;js&quot;&gt;&lt;pre class=&quot;language-js&quot;&gt;&lt;code class=&quot;language-js&quot;&gt;plugins&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;
+  &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+    resolve&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token template-string&quot;&gt;&lt;span class=&quot;token template-punctuation string&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;gatsby-transformer-remark&lt;/span&gt;&lt;span class=&quot;token template-punctuation string&quot;&gt;`&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+    options&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+      plugins&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;
+        &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+          resolve&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token template-string&quot;&gt;&lt;span class=&quot;token template-punctuation string&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;gatsby-remark-katex&lt;/span&gt;&lt;span class=&quot;token template-punctuation string&quot;&gt;`&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+          options&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+            strict&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token template-string&quot;&gt;&lt;span class=&quot;token template-punctuation string&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;ignore&lt;/span&gt;&lt;span class=&quot;token template-punctuation string&quot;&gt;`&lt;/span&gt;&lt;/span&gt;
+          &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+      &lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;em&gt;gatsby-browser.js&lt;/em&gt;&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;js&quot;&gt;&lt;pre class=&quot;language-js&quot;&gt;&lt;code class=&quot;language-js&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos;katex/dist/katex.min.css&apos;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;gatsby-browser.js&lt;/code&gt;の方の修正はtempleteファイルに直接importを書いても大丈夫（なはず）です。&lt;/p&gt;
+&lt;h2&gt;動作確認&lt;/h2&gt;
+&lt;p&gt;以下のように&lt;code class=&quot;language-text&quot;&gt;$&lt;/code&gt;と&lt;code class=&quot;language-text&quot;&gt;$&lt;/code&gt;の間にKaTexの式を書くと&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;markdown&quot;&gt;&lt;pre class=&quot;language-markdown&quot;&gt;&lt;code class=&quot;language-markdown&quot;&gt;三平方の定理は$a^2 + b^2 = c^2$です。&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;三平方の定理は&lt;span class=&quot;katex&quot;&gt;&lt;span class=&quot;katex-mathml&quot;&gt;&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;semantics&gt;&lt;mrow&gt;&lt;msup&gt;&lt;mi&gt;a&lt;/mi&gt;&lt;mn&gt;2&lt;/mn&gt;&lt;/msup&gt;&lt;mo&gt;+&lt;/mo&gt;&lt;msup&gt;&lt;mi&gt;b&lt;/mi&gt;&lt;mn&gt;2&lt;/mn&gt;&lt;/msup&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;msup&gt;&lt;mi&gt;c&lt;/mi&gt;&lt;mn&gt;2&lt;/mn&gt;&lt;/msup&gt;&lt;/mrow&gt;&lt;annotation encoding=&quot;application/x-tex&quot;&gt;a^2 + b^2 = c^2&lt;/annotation&gt;&lt;/semantics&gt;&lt;/math&gt;&lt;/span&gt;&lt;span class=&quot;katex-html&quot; aria-hidden=&quot;true&quot;&gt;&lt;span class=&quot;base&quot;&gt;&lt;span class=&quot;strut&quot; style=&quot;height:0.897438em;vertical-align:-0.08333em;&quot;&gt;&lt;/span&gt;&lt;span class=&quot;mord&quot;&gt;&lt;span class=&quot;mord mathdefault&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;msupsub&quot;&gt;&lt;span class=&quot;vlist-t&quot;&gt;&lt;span class=&quot;vlist-r&quot;&gt;&lt;span class=&quot;vlist&quot; style=&quot;height:0.8141079999999999em;&quot;&gt;&lt;span style=&quot;top:-3.063em;margin-right:0.05em;&quot;&gt;&lt;span class=&quot;pstrut&quot; style=&quot;height:2.7em;&quot;&gt;&lt;/span&gt;&lt;span class=&quot;sizing reset-size6 size3 mtight&quot;&gt;&lt;span class=&quot;mord mtight&quot;&gt;2&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;mspace&quot; style=&quot;margin-right:0.2222222222222222em;&quot;&gt;&lt;/span&gt;&lt;span class=&quot;mbin&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;mspace&quot; style=&quot;margin-right:0.2222222222222222em;&quot;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;base&quot;&gt;&lt;span class=&quot;strut&quot; style=&quot;height:0.8141079999999999em;vertical-align:0em;&quot;&gt;&lt;/span&gt;&lt;span class=&quot;mord&quot;&gt;&lt;span class=&quot;mord mathdefault&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;msupsub&quot;&gt;&lt;span class=&quot;vlist-t&quot;&gt;&lt;span class=&quot;vlist-r&quot;&gt;&lt;span class=&quot;vlist&quot; style=&quot;height:0.8141079999999999em;&quot;&gt;&lt;span style=&quot;top:-3.063em;margin-right:0.05em;&quot;&gt;&lt;span class=&quot;pstrut&quot; style=&quot;height:2.7em;&quot;&gt;&lt;/span&gt;&lt;span class=&quot;sizing reset-size6 size3 mtight&quot;&gt;&lt;span class=&quot;mord mtight&quot;&gt;2&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;mspace&quot; style=&quot;margin-right:0.2777777777777778em;&quot;&gt;&lt;/span&gt;&lt;span class=&quot;mrel&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mspace&quot; style=&quot;margin-right:0.2777777777777778em;&quot;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;base&quot;&gt;&lt;span class=&quot;strut&quot; style=&quot;height:0.8141079999999999em;vertical-align:0em;&quot;&gt;&lt;/span&gt;&lt;span class=&quot;mord&quot;&gt;&lt;span class=&quot;mord mathdefault&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;msupsub&quot;&gt;&lt;span class=&quot;vlist-t&quot;&gt;&lt;span class=&quot;vlist-r&quot;&gt;&lt;span class=&quot;vlist&quot; style=&quot;height:0.8141079999999999em;&quot;&gt;&lt;span style=&quot;top:-3.063em;margin-right:0.05em;&quot;&gt;&lt;span class=&quot;pstrut&quot; style=&quot;height:2.7em;&quot;&gt;&lt;/span&gt;&lt;span class=&quot;sizing reset-size6 size3 mtight&quot;&gt;&lt;span class=&quot;mord mtight&quot;&gt;2&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;です。 &lt;/p&gt;
+&lt;p&gt;このようにインラインで表示されます。  &lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;$$&lt;/code&gt;と&lt;code class=&quot;language-text&quot;&gt;$$&lt;/code&gt;で挟むと&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;markdown&quot;&gt;&lt;pre class=&quot;language-markdown&quot;&gt;&lt;code class=&quot;language-markdown&quot;&gt;$$
+a^2 + b^2 = c^2
+$$  &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;span class=&quot;katex-display&quot;&gt;&lt;span class=&quot;katex&quot;&gt;&lt;span class=&quot;katex-mathml&quot;&gt;&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;semantics&gt;&lt;mrow&gt;&lt;msup&gt;&lt;mi&gt;a&lt;/mi&gt;&lt;mn&gt;2&lt;/mn&gt;&lt;/msup&gt;&lt;mo&gt;+&lt;/mo&gt;&lt;msup&gt;&lt;mi&gt;b&lt;/mi&gt;&lt;mn&gt;2&lt;/mn&gt;&lt;/msup&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;msup&gt;&lt;mi&gt;c&lt;/mi&gt;&lt;mn&gt;2&lt;/mn&gt;&lt;/msup&gt;&lt;/mrow&gt;&lt;annotation encoding=&quot;application/x-tex&quot;&gt;a^2 + b^2 = c^2  &lt;/annotation&gt;&lt;/semantics&gt;&lt;/math&gt;&lt;/span&gt;&lt;span class=&quot;katex-html&quot; aria-hidden=&quot;true&quot;&gt;&lt;span class=&quot;base&quot;&gt;&lt;span class=&quot;strut&quot; style=&quot;height:0.9474379999999999em;vertical-align:-0.08333em;&quot;&gt;&lt;/span&gt;&lt;span class=&quot;mord&quot;&gt;&lt;span class=&quot;mord mathdefault&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;msupsub&quot;&gt;&lt;span class=&quot;vlist-t&quot;&gt;&lt;span class=&quot;vlist-r&quot;&gt;&lt;span class=&quot;vlist&quot; style=&quot;height:0.8641079999999999em;&quot;&gt;&lt;span style=&quot;top:-3.113em;margin-right:0.05em;&quot;&gt;&lt;span class=&quot;pstrut&quot; style=&quot;height:2.7em;&quot;&gt;&lt;/span&gt;&lt;span class=&quot;sizing reset-size6 size3 mtight&quot;&gt;&lt;span class=&quot;mord mtight&quot;&gt;2&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;mspace&quot; style=&quot;margin-right:0.2222222222222222em;&quot;&gt;&lt;/span&gt;&lt;span class=&quot;mbin&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;mspace&quot; style=&quot;margin-right:0.2222222222222222em;&quot;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;base&quot;&gt;&lt;span class=&quot;strut&quot; style=&quot;height:0.8641079999999999em;vertical-align:0em;&quot;&gt;&lt;/span&gt;&lt;span class=&quot;mord&quot;&gt;&lt;span class=&quot;mord mathdefault&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;msupsub&quot;&gt;&lt;span class=&quot;vlist-t&quot;&gt;&lt;span class=&quot;vlist-r&quot;&gt;&lt;span class=&quot;vlist&quot; style=&quot;height:0.8641079999999999em;&quot;&gt;&lt;span style=&quot;top:-3.113em;margin-right:0.05em;&quot;&gt;&lt;span class=&quot;pstrut&quot; style=&quot;height:2.7em;&quot;&gt;&lt;/span&gt;&lt;span class=&quot;sizing reset-size6 size3 mtight&quot;&gt;&lt;span class=&quot;mord mtight&quot;&gt;2&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;mspace&quot; style=&quot;margin-right:0.2777777777777778em;&quot;&gt;&lt;/span&gt;&lt;span class=&quot;mrel&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mspace&quot; style=&quot;margin-right:0.2777777777777778em;&quot;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;base&quot;&gt;&lt;span class=&quot;strut&quot; style=&quot;height:0.8641079999999999em;vertical-align:0em;&quot;&gt;&lt;/span&gt;&lt;span class=&quot;mord&quot;&gt;&lt;span class=&quot;mord mathdefault&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;msupsub&quot;&gt;&lt;span class=&quot;vlist-t&quot;&gt;&lt;span class=&quot;vlist-r&quot;&gt;&lt;span class=&quot;vlist&quot; style=&quot;height:0.8641079999999999em;&quot;&gt;&lt;span style=&quot;top:-3.113em;margin-right:0.05em;&quot;&gt;&lt;span class=&quot;pstrut&quot; style=&quot;height:2.7em;&quot;&gt;&lt;/span&gt;&lt;span class=&quot;sizing reset-size6 size3 mtight&quot;&gt;&lt;span class=&quot;mord mtight&quot;&gt;2&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;
+&lt;p&gt;と書けます。&lt;/p&gt;
+&lt;p&gt;KaTeXの文法はまだ全くわかってませんが、必要なのから順番に覚えていきます。&lt;/p&gt;</content:encoded></item><item><title><![CDATA[シェルスクリプトでの記事のマークダウンファイルを作成する]]></title><description><![CDATA[GatsbyJSのスターター”gatsby-starter-blog”で作成している当サイトの記事ファイルを作成するのが結構手間だったのでシェルスクリプトにまとめました。 gatsby-starter-blogのマークダウンファイルの構造 gatsby-starter-blog…]]></description><link>https://akumachan.github.io/ブログ/シェルスクリプトで記事のマークダウンファイルを作成する/</link><guid isPermaLink="false">https://akumachan.github.io/ブログ/シェルスクリプトで記事のマークダウンファイルを作成する/</guid><pubDate>Mon, 01 Jun 2020 19:54:54 GMT</pubDate><content:encoded>&lt;p&gt;GatsbyJSのスターター”gatsby-starter-blog”で作成している当サイトの記事ファイルを作成するのが結構手間だったのでシェルスクリプトにまとめました。&lt;/p&gt;
+&lt;h2&gt;gatsby-starter-blogのマークダウンファイルの構造&lt;/h2&gt;
+&lt;p&gt;gatsby-starter-blogの中のマークダウンファイルの階層は以下のようになっています。&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;{GatsbyJSプロジェクト}/content/blog/任意の数の階層~/記事名/index.md&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;たぶん記事名のところは記事名と合わせなくてもいいんだと思いますが、管理の都合上記事名にしています。&lt;br&gt;
+いちいちディレクトリを&lt;code class=&quot;language-text&quot;&gt;mkdir -p ./xxxxxx&lt;/code&gt;で作成してさらにファイルを作成して・・・というのが面倒だったので、カテゴリ名（階層）と記事名を指定したらFront Matterのテンプレごと作成してくれるようにします。&lt;/p&gt;
+&lt;h2&gt;スクリプト内でやること&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;ディレクトリの作成&lt;/li&gt;
+&lt;li&gt;mdファイルの作成&lt;/li&gt;
+&lt;li&gt;mdファイルにFront Matterを書き込む&lt;/li&gt;
+&lt;li&gt;完了の旨ログを出す&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;完成品&lt;/h2&gt;
+&lt;p&gt;&lt;em&gt;mken.sh&lt;/em&gt; - make entryの略です
+今回はGatsbyJSのプロジェクトフォルダの直下に置きました。&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;sh&quot;&gt;&lt;pre class=&quot;language-sh&quot;&gt;&lt;code class=&quot;language-sh&quot;&gt;!#/bin/bash
+
+#Parameter1: Category name
+#Parameter2: Entry title
+
+dir=&amp;quot;./${1}/${2}/&amp;quot;
+file=&amp;quot;${dir}index.md&amp;quot;
+
+cd ./content/blog/
+
+#ディレクトリ作成
+mkdir -p $dir
+#ファイル作成・Front Matter書き込み
+echo &amp;quot;---&amp;quot; &amp;gt; ${file}
+echo &amp;quot;title: \&amp;quot;${2//_/ }\&amp;quot;&amp;quot; &amp;gt;&amp;gt; ${file}
+echo &amp;quot;date: \&amp;quot;`date &amp;quot;+%Y-%m-%d %H:%M:%S&amp;quot;`\&amp;quot;&amp;quot; &amp;gt;&amp;gt; ${file}
+echo &amp;quot;description: \&amp;quot;\&amp;quot;&amp;quot; &amp;gt;&amp;gt; ${file}
+echo &amp;quot;category: \&amp;quot;${1}\&amp;quot;&amp;quot; &amp;gt;&amp;gt; ${file}
+echo &amp;quot;tags: []&amp;quot; &amp;gt;&amp;gt; ${file}
+echo &amp;quot;---&amp;quot; &amp;gt;&amp;gt; ${file}
+
+#成功出力
+echo &amp;quot;Create ${file}&amp;quot;
+#ファイルを開く
+code ${file}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;自動でFront MatterのTitle, Date, Categoryを設定できるようにしました。
+タイトルにスペースを入れたい場合はスペースを&lt;code class=&quot;language-text&quot;&gt;_&lt;/code&gt;と置き、Front Matter内でスペースに置き換えます。&lt;/p&gt;
+&lt;h2&gt;実行ファイルにする&lt;/h2&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;sh&quot;&gt;&lt;pre class=&quot;language-sh&quot;&gt;&lt;code class=&quot;language-sh&quot;&gt;chmod +x ./mken.sh&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2&gt;実行&lt;/h2&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;sh&quot;&gt;&lt;pre class=&quot;language-sh&quot;&gt;&lt;code class=&quot;language-sh&quot;&gt;./mken.sh Blog シェルスクリプトで記事のマークダウンファイルを作成する&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;{プロジェクト}/content/blog/Blog/シェルスクリプトで記事のマークダウンファイルを作成する/index.md&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;---
+title: &amp;quot;シェルスクリプトでの記事のマークダウンファイルを作成する&amp;quot;
+date: &amp;quot;2020-06-01 19:54:54&amp;quot;
+description: &amp;quot;&amp;quot;
+category: &amp;quot;Blog&amp;quot;
+tags: []
+---&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;ちゃんとFront Matterが設定されたファイルができました。&lt;br&gt;
+よーしらくちんになったぞ！&lt;/p&gt;</content:encoded></item><item><title><![CDATA[GatsbyJSのサイトをGithub Pagesで公開する]]></title><description><![CDATA[Github Pagesとは  Github Pagesとは（公式） Githubのリポジトリを直接ホストしてくれるサービスです。 Githubにリポジトリを作る Githubに という名前でリポジトリを作成すると、そのリポジトリのmaster…]]></description><link>https://akumachan.github.io/ブログ/GatsbyJSのサイトをGithub_Pagesで公開する/</link><guid isPermaLink="false">https://akumachan.github.io/ブログ/GatsbyJSのサイトをGithub_Pagesで公開する/</guid><pubDate>Sun, 31 May 2020 20:55:33 GMT</pubDate><content:encoded>&lt;h2&gt;Github Pagesとは&lt;/h2&gt;
+&lt;p&gt; &lt;a href=&quot;https://help.github.com/ja/github/working-with-github-pages/about-github-pages&quot;&gt;Github Pagesとは（公式）&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Githubのリポジトリを直接ホストしてくれるサービスです。&lt;/p&gt;
+&lt;h2&gt;Githubにリポジトリを作る&lt;/h2&gt;
+&lt;p&gt;Githubに &lt;code class=&quot;language-text&quot;&gt;{Githubのusername}.github.io&lt;/code&gt;という名前でリポジトリを作成すると、そのリポジトリのmasterブランチにあるコードを自動でホストしてくれます。&lt;br&gt;
+ページには&lt;code class=&quot;language-text&quot;&gt;https://{Githubのusername}.github.io&lt;/code&gt;でアクセスできます。&lt;/p&gt;
+&lt;h2&gt;ソースコードを管理する&lt;/h2&gt;
+&lt;p&gt;github.ioのリポジトリのmasterブランチにはGatsbyJSでビルドしたファイルを置くことになりますが、ソースを管理するリポジトリを別に用意するのもいまいちなので、同じリポジトリ内の別のブランチで管理します。  &lt;/p&gt;
+&lt;p&gt;このサイトのリポジトリではソースの管理リポジトリを&lt;code class=&quot;language-text&quot;&gt;source&lt;/code&gt;としました。&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;sh&quot;&gt;&lt;pre class=&quot;language-sh&quot;&gt;&lt;code class=&quot;language-sh&quot;&gt;#ソースのディレクトリに移動
+cd {ソースのリポジトリ}
+#gitのリポジトリとして初期化
+git init
+#sourceブランチを作成して移動
+git switch -c source
+#ファイルを全てコミット
+git commit -a
+#作成したGithubリポジトリをリモートリポジトリに指定
+git remote add origin https://github.com/{Githubのusername}/{Githubのusername}.github.io.git
+git push -u origin source&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2&gt;デプロイ用コマンドの作成&lt;/h2&gt;
+&lt;p&gt;Github Pagesにデプロイするツールgh-pagesを追加する。&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;sh&quot;&gt;&lt;pre class=&quot;language-sh&quot;&gt;&lt;code class=&quot;language-sh&quot;&gt;yarn add -D gh-pages&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;package.jsonにデプロイコマンドを追加する。&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;json&quot;&gt;&lt;pre class=&quot;language-json&quot;&gt;&lt;code class=&quot;language-json&quot;&gt;&lt;span class=&quot;token property&quot;&gt;&quot;scripts&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;token property&quot;&gt;&quot;build&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;gatsby build&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;token property&quot;&gt;&quot;deploy&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;yarn build &amp;amp;&amp;amp; gh-pages -d public -b master&quot;&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2&gt;デプロイする&lt;/h2&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;sh&quot;&gt;&lt;pre class=&quot;language-sh&quot;&gt;&lt;code class=&quot;language-sh&quot;&gt;yarn deploy&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2&gt;関連項目&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&quot;../GatsbyJS%E3%81%AE%E3%82%BD%E3%83%BC%E3%82%B9%E3%82%92push%E3%81%97%E3%81%9F%E3%82%89%E8%87%AA%E5%8B%95%E3%81%A7%E3%83%93%E3%83%AB%E3%83%89%E3%81%97%E3%81%A6Github%20Pages%E3%81%AB%E3%83%87%E3%83%97%E3%83%AD%E3%82%A4%E3%81%99%E3%82%8B/&quot;&gt;GatsbyJSのソースをpushしたら自動でビルドしてGithub Pagesにデプロイする&lt;/a&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[VisualStudioCodeで現在日時を入力する拡張機能]]></title><description><![CDATA[拡張機能: Insert Date String Insert Date String 使い方 現在日時を挿入したい箇所で。 関連項目 VisualStudioCodeの拡張機能のインストール方法]]></description><link>https://akumachan.github.io/VisualStudioCode/VisualStudioCodeで現在日付を入力する拡張機能/</link><guid isPermaLink="false">https://akumachan.github.io/VisualStudioCode/VisualStudioCodeで現在日付を入力する拡張機能/</guid><pubDate>Sun, 31 May 2020 18:28:20 GMT</pubDate><content:encoded>&lt;h2&gt;拡張機能: Insert Date String&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&quot;https://marketplace.visualstudio.com/items?itemName=jsynowiec.vscode-insertdatestring&quot;&gt;Insert Date String&lt;/a&gt;&lt;/p&gt;
+&lt;h2&gt;使い方&lt;/h2&gt;
+&lt;p&gt;現在日時を挿入したい箇所で&lt;code class=&quot;language-text&quot;&gt;⌘ + Shift + I&lt;/code&gt;。&lt;/p&gt;
+&lt;h2&gt;関連項目&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&quot;&quot;&gt;VisualStudioCodeの拡張機能のインストール方法&lt;/a&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[VisualStudioCodeでTerminalからファイルを開く]]></title><description><![CDATA[Explorerからいちいちクリックして開くのが面倒なのでTerminalから開けるようにしましょう。 手順 codeコマンドを使用できるようにする コマンドパレットを開く Shell Commandと検索し”Shell Command: install ‘code…]]></description><link>https://akumachan.github.io/VisualStudioCode/VisualStudioCodeでTerminalからファイルを開く/</link><guid isPermaLink="false">https://akumachan.github.io/VisualStudioCode/VisualStudioCodeでTerminalからファイルを開く/</guid><pubDate>Sun, 31 May 2020 18:10:59 GMT</pubDate><content:encoded>&lt;p&gt;Explorerからいちいちクリックして開くのが面倒なのでTerminalから開けるようにしましょう。&lt;/p&gt;
+&lt;h2&gt;手順&lt;/h2&gt;
+&lt;h4&gt;codeコマンドを使用できるようにする&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;&quot;&gt;コマンドパレットを開く&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Shell Commandと検索し”Shell Command: install ‘code’ command in PATH”を選択&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4&gt;codeコマンドでファイルを開く&lt;/h4&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;terminal&quot;&gt;&lt;pre class=&quot;language-terminal&quot;&gt;&lt;code class=&quot;language-terminal&quot;&gt;code ファイルパス&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;以上です。&lt;/p&gt;</content:encoded></item><item><title><![CDATA[VisualStudioCodeでマークダウン文書のときだけ末尾のスペースを削除しない]]></title><description><![CDATA[VisualStudioCodeで末尾のスペースを自動で削除するように設定していると、マークダウン文書を編集しているときに改行のための末尾のスペースが全て削除されてしまうため、 マークダウンエディターでは上記設定を無効に設定します。 手順 Setting(JSON…]]></description><link>https://akumachan.github.io/VisualStudioCode/VisualStudioCodeでマークダウン文書のときだけ末尾のスペースを削除しない/</link><guid isPermaLink="false">https://akumachan.github.io/VisualStudioCode/VisualStudioCodeでマークダウン文書のときだけ末尾のスペースを削除しない/</guid><pubDate>Sun, 31 May 2020 17:11:23 GMT</pubDate><content:encoded>&lt;p&gt;VisualStudioCodeで&lt;a href=&quot;&quot;&gt;末尾のスペースを自動で削除する&lt;/a&gt;ように設定していると、マークダウン文書を編集しているときに改行のための末尾のスペースが全て削除されてしまうため、&lt;br&gt;
+マークダウンエディターでは上記設定を無効に設定します。&lt;/p&gt;
+&lt;h2&gt;手順&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;&quot;&gt;Setting(JSON)を開く&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;以下の設定を追加&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;&amp;quot;[markdown]&amp;quot;: {
+    &amp;quot;files.trimTrailingWhitespace&amp;quot;: false
+}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;これでマークダウンエディターのときは末尾のスペースが削除されなくなりました。&lt;/p&gt;</content:encoded></item><item><title><![CDATA[マークダウンで書けるブログを作成]]></title><description><![CDATA[とりあえず最低限のものだけ作成しました。 これで記事は書けるため、デザインや機能はのちのち足していこうと思います。]]></description><link>https://akumachan.github.io/ブログ/マークダウンで書けるブログを作成/</link><guid isPermaLink="false">https://akumachan.github.io/ブログ/マークダウンで書けるブログを作成/</guid><pubDate>Sun, 31 May 2020 16:22:51 GMT</pubDate><content:encoded>&lt;p&gt;とりあえず最低限のものだけ作成しました。&lt;br&gt;
+これで記事は書けるため、デザインや機能はのちのち足していこうと思います。&lt;/p&gt;</content:encoded></item></channel></rss>
