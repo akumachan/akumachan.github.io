@@ -53,5 +53,5 @@ git config --global --edit
 
 
 ## 参考
-[How to fetch all Git branches - Stack Overflow](https://stackoverflow.com/questions/10312521/how-to-fetch-all-git-branches/21591209)
+[How to fetch all Git branches - Stack Overflow](https://stackoverflow.com/questions/10312521/how-to-fetch-all-git-branches/21591209)  
 [【git】aliasの設定方法 - Qiita](https://qiita.com/chihiro/items/04813c707cc665de67c5)
